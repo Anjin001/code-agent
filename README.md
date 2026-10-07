@@ -84,17 +84,14 @@ Agent：已调用 save_code_to_file 保存 quicksort.py ...
 ## 五、一键演示与录屏
 
 ```bash
-# 离线演示（无需 API Key，适合录视频）
-python demo.py
-
-# 真实调用 DeepSeek
-python demo.py --real
-
-# 自定义需求
-python demo.py --prompt "写一个快速排序"
+python demo.py                       # 自动判断：有 Key 真实调用，无 Key 离线 Mock
+python demo.py --real                # 强制真实调用 DeepSeek
+python demo.py --mock                # 强制离线 Mock
+python demo.py --prompt "写一个快速排序"   # 自定义需求
 ```
 
-脚本会自动运行 Agent 并展示生成的代码文件内容。1 分钟视频讲解稿见
+配置好 `.env` 里的 `DEEPSEEK_API_KEY` 后，`python demo.py` 会真实调用 DeepSeek；
+未配置 Key 时自动降级为离线 Mock（会打印提示）。1 分钟视频讲解稿见
 [demo-script.md](./demo-script.md)。
 
 ## 六、测试
