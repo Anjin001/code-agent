@@ -81,7 +81,23 @@ Agent：已调用 save_code_to_file 保存 quicksort.py ...
       - 复杂度：...
 ```
 
-## 五、测试
+## 五、一键演示与录屏
+
+```bash
+# 离线演示（无需 API Key，适合录视频）
+python demo.py
+
+# 真实调用 DeepSeek
+python demo.py --real
+
+# 自定义需求
+python demo.py --prompt "写一个快速排序"
+```
+
+脚本会自动运行 Agent 并展示生成的代码文件内容。1 分钟视频讲解稿见
+[demo-script.md](./demo-script.md)。
+
+## 六、测试
 
 ```bash
 pytest -v
@@ -89,11 +105,12 @@ pytest -v
 
 测试使用离线 Mock 模型，无需 API Key。
 
-## 六、目录结构
+## 七、目录结构
 
 ```
 code-agent/
 ├── main.py                 # 命令行入口
+├── demo.py                 # 一键演示脚本（录屏用）
 ├── codegen/                # 核心包
 │   ├── config.py           # 配置加载（环境变量/.env）
 │   ├── llm.py              # LLM 构建（DeepSeek / Mock）
@@ -105,10 +122,11 @@ code-agent/
 ├── workspace/              # 生成代码的输出目录（运行时创建，已 gitignore）
 ├── requirements.txt
 ├── .env.example
+├── demo-script.md          # 演示视频讲解稿
 └── Design.md               # 设计文档
 ```
 
-## 七、技术栈
+## 八、技术栈
 
 - **语言**：Python 3.11
 - **Agent 框架**：LangChain（`langchain-core` + `langchain-openai`）
