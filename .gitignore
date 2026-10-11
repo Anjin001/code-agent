@@ -16,3 +16,8 @@ workspace/
 # 测试
 .pytest_cache/
 .coverage
+
+# 演示视频等大型二进制（仅放备份压缩包，不进仓库）
+*.mp4
+*.mov
+*.mkv

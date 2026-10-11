@@ -34,11 +34,13 @@ def _resolve_safely(path: str) -> Path | None:
 
 @tool
 def save_code_to_file(filename: str, code: str) -> str:
-    """把生成的代码保存到工作目录（workspace）下的文件。
+    """把生成的代码保存到 workspace 目录下的文件。
 
-    Args:
-        filename: 文件名（相对路径，例如 utils.py 或 src/hello.py）。
-        code: 要写入的完整代码内容。
+    适用场景：生成了一段完整代码、需要持久化保存到文件时调用；生成代码后通常都应保存。
+    参数 filename：str，要保存的文件名（相对路径），例如 "fibonacci.py" 或 "src/hello.cpp"。
+    参数 code：str，要写入的完整代码内容，例如 "def add(a, b): return a + b"。
+    返回：字符串，成功返回已保存的字符数与相对路径；失败返回错误原因。
+    不适用：只想在回复中展示代码而不落盘时不要用；读取文件内容请用 read_file。
     """
     target = _resolve_safely(filename)
     if target is None:
@@ -50,10 +52,12 @@ def save_code_to_file(filename: str, code: str) -> str:
 
 @tool
 def read_file(path: str) -> str:
-    """读取工作目录（workspace）内的文件内容，用于获取上下文。
+    """读取 workspace 目录内的文件内容。
 
-    Args:
-        path: 文件相对路径。
+    适用场景：需要查看已生成文件的内容、获取上下文，或确认文件是否已保存时调用。
+    参数 path：str，文件相对路径，例如 "fibonacci.py"。
+    返回：字符串，文件内容；文件不存在或路径越界时返回错误提示。
+    不适用：要写文件用 save_code_to_file，要执行代码用 run_python，要列目录用 list_files。
     """
     target = _resolve_safely(path)
     if target is None:
@@ -65,10 +69,12 @@ def read_file(path: str) -> str:
 
 @tool
 def run_python(code: str) -> str:
-    """在受限子进程中执行一段 Python 代码并返回输出，用于验证生成的代码。
+    """在子进程中执行一段 Python 代码并返回输出。
 
-    Args:
-        code: 要执行的 Python 代码。
+    适用场景：生成代码后想运行验证正确性，或需要实际执行一段 Python 时调用。
+    参数 code：str，要执行的 Python 代码，例如 "print(sum(range(10)))"。
+    返回：字符串，标准输出与标准错误的合并内容；超时或空输出时有对应提示。
+    不适用：只想生成代码而不运行；或代码不是 Python（如 C++ 需编译）时不要用。
     """
     try:
         proc = subprocess.run(
@@ -86,10 +92,12 @@ def run_python(code: str) -> str:
 
 @tool
 def list_files(path: str = ".") -> str:
-    """列出工作目录（workspace）下的文件。
+    """列出 workspace 目录下的文件。
 
-    Args:
-        path: 目录相对路径，默认 "." 表示根目录。
+    适用场景：想确认已生成了哪些文件、或查看目录结构时调用。
+    参数 path：str，目录相对路径，默认 "." 表示根目录，例如 "."。
+    返回：字符串，文件名列表（每行一个）；空目录返回 "(空)"。
+    不适用：要读文件内容用 read_file，要写文件用 save_code_to_file。
     """
     target = _resolve_safely(path)
     if target is None:
